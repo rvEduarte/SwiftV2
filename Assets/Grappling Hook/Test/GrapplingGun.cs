@@ -1,4 +1,5 @@
 ﻿using ClearSky;
+using System.Collections;
 using UnityEngine;
 
 public class GrapplingGun : MonoBehaviour
@@ -67,13 +68,10 @@ public class GrapplingGun : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            
-            SetGrapplePoint();
+            StartCoroutine(WaitForSec());
         }
         else if (Input.GetKey(KeyCode.Mouse0))
         {
-            anim.SetBool("isJump", false);
-            anim.SetBool("isGrap", true);
             if (grappleRope.enabled)
             {
                 RotateGun(grapplePoint, false);
@@ -94,8 +92,9 @@ public class GrapplingGun : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            anim.SetBool("isGrap", false);
-            anim.SetBool("isJump", true);
+            Debug.Log("RELEASE");
+            anim.SetBool("isGrap", false);       
+
             grappleRope.enabled = false;
             m_springJoint2D.enabled = false;
             ballRigidbody.gravityScale = 1;
@@ -105,12 +104,17 @@ public class GrapplingGun : MonoBehaviour
             anim.SetBool("isGrap", false);
             RotateGun(m_camera.ScreenToWorldPoint(Input.mousePosition), true);
 
-            if(SimplePlayerController.grounded == true)
+            if (grappleRope.enabled == false && SimplePlayerController.grounded == true && anim.GetBool("isJump") == true)
             {
-                SimplePlayerController.isJumping = false;
-                //anim.SetBool("isJump", false);
+                Debug.Log("OW YEAH");
+                anim.SetBool("isJump", false);
             }
         }
+    }
+    IEnumerator WaitForSec()
+    {
+        yield return new WaitForSeconds(0.1f);
+        SetGrapplePoint();
     }
 
     void RotateGun(Vector3 lookPoint, bool allowRotationOverTime)

@@ -147,7 +147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32239871}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.1, y: -7.366141, z: 7.5582376}
   m_LocalScale: {x: 5.187423, y: 5.187423, z: 5.187423}
   m_ConstrainProportionsScale: 0
@@ -301,8 +301,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 1}
-      key1: {r: 0, g: 0, b: 0, a: 1}
+      key0: {r: 1, g: 0, b: 0.53408957, a: 1}
+      key1: {r: 1, g: 0.7506041, b: 0.2028302, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -326,7 +326,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 2
@@ -355,7 +355,7 @@ MonoBehaviour:
   grapplingGun: {fileID: 1548684637}
   m_lineRenderer: {fileID: 103452264}
   percision: 120
-  straightenLineSpeed: 11.5
+  straightenLineSpeed: 6.3
   ropeAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -425,7 +425,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  WaveSize: 1.08
+  WaveSize: 0.5
   ropeLaunchSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -450,7 +450,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ropeLaunchSpeedMultiplayer: 5.4
+  ropeLaunchSpeedMultiplayer: 3
   isGrappling: 0
 --- !u!1 &104702808
 GameObject:
@@ -966,7 +966,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b3ddbc326c2dcad4f9057c36137ad78d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6901961, g: 0.5019608, b: 0.10980393, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1403,7 +1403,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b3ddbc326c2dcad4f9057c36137ad78d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6901961, g: 0.5019608, b: 0.10980393, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1466,7 +1466,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1984,7 +1984,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b3ddbc326c2dcad4f9057c36137ad78d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6901961, g: 0.5019608, b: 0.10196079, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2449,6 +2449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movePower: 10
   jumpPower: 15
+  mainCamera: {fileID: 385787454}
 --- !u!95 &891535504
 Animator:
   serializedVersion: 5

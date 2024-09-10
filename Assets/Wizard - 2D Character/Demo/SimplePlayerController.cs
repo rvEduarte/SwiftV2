@@ -4,7 +4,7 @@ namespace ClearSky
 {
     public class SimplePlayerController : MonoBehaviour
     {
-        [SerializeField] public static bool grounded = false; //default is FALSE
+        [SerializeField] public static bool grounded;
         public float movePower = 10f;
         public float jumpPower = 15f; //Set Gravity Scale in Rigidbody2D Component to 5
 
@@ -26,6 +26,7 @@ namespace ClearSky
         {
             rb = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
+            grounded = true;
         }
 
         private void Update()
@@ -40,12 +41,18 @@ namespace ClearSky
                 Run();
                 FlipCharacterBasedOnClick();
             }
+            if(!grounded)
+            {
+                PlayAnimation();
+            }
         }
         void FlipCharacterBasedOnClick()
         {
             // Check if the left mouse button is clicked
             if (Input.GetMouseButtonDown(0))
             {
+                anim.SetBool("isJump", false);
+                anim.SetBool("isGrap", true);
                 // Store the world position of the click
                 lastClickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
@@ -63,16 +70,27 @@ namespace ClearSky
         private void OnTriggerEnter2D(Collider2D other)
         {
             anim.SetBool("isGrap", false);
-            anim.SetBool("isJump", false);
             grounded = true;
+            anim.SetBool("isJump", false); // Reset jump animation when landing
             Debug.Log("ENTER2D");
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
+            Debug.Log("EXIT2D");
             grounded = false;
-            Debug.Log("Exit2D");
+
         }
+
+        void PlayAnimation()
+        {
+            if (anim.GetBool("isGrap") == false)
+            {
+                Debug.Log("EXIT2D == PUMASOK");
+                anim.SetBool("isJump", true);
+            }
+        }
+
 
 
         void Run()
@@ -108,6 +126,7 @@ namespace ClearSky
             && !anim.GetBool("isJump")) // pagnaka false ung isJump papasok ung code dito
             {
                 isJumping = true;
+                grounded = false; // Player is now in the air
                 anim.SetBool("isJump", true);
             }
             if (!isJumping)
