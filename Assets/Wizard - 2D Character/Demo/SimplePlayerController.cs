@@ -4,15 +4,21 @@ namespace ClearSky
 {
     public class SimplePlayerController : MonoBehaviour
     {
+        [SerializeField] public static bool grounded = false; //default is FALSE
         public float movePower = 10f;
         public float jumpPower = 15f; //Set Gravity Scale in Rigidbody2D Component to 5
 
         private Rigidbody2D rb;
         private Animator anim;
         Vector3 movement;
-        private int direction = 1;
-        bool isJumping = false;
+        //private int direction = 1;
+        private float direction = 0.1927739f;
+        public static bool isJumping = false;
         private bool alive = true;
+
+        public Camera mainCamera;
+
+        private Vector3 lastClickPosition;  // Stores the position 
 
 
         // Start is called before the first frame update
@@ -32,12 +38,40 @@ namespace ClearSky
                 Attack();
                 Jump();
                 Run();
+                FlipCharacterBasedOnClick();
+            }
+        }
+        void FlipCharacterBasedOnClick()
+        {
+            // Check if the left mouse button is clicked
+            if (Input.GetMouseButtonDown(0))
+            {
+                // Store the world position of the click
+                lastClickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
+                // Flip the character based on the click position relative to the player
+                if (lastClickPosition.x < transform.position.x)
+                {
+                    transform.localScale = new Vector3(-0.1927739f, 0.1927739f, 0.1927739f);  // Face left
+                }
+                else if (lastClickPosition.x > transform.position.x)
+                {
+                    transform.localScale = new Vector3(0.1927739f, 0.1927739f, 0.1927739f);   // Face right
+                }
             }
         }
         private void OnTriggerEnter2D(Collider2D other)
         {
+            anim.SetBool("isGrap", false);
             anim.SetBool("isJump", false);
+            grounded = true;
+            Debug.Log("ENTER2D");
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            grounded = false;
+            Debug.Log("Exit2D");
         }
 
 
@@ -46,23 +80,22 @@ namespace ClearSky
             Vector3 moveVelocity = Vector3.zero;
             anim.SetBool("isRun", false);
 
-
             if (Input.GetAxisRaw("Horizontal") < 0)
             {
-                direction = -1;
+                direction = -0.1927739f;
                 moveVelocity = Vector3.left;
 
-                transform.localScale = new Vector3(direction, 1, 1);
+                transform.localScale = new Vector3(direction, 0.1927739f, 0.1927739f);
                 if (!anim.GetBool("isJump"))
                     anim.SetBool("isRun", true);
 
             }
             if (Input.GetAxisRaw("Horizontal") > 0)
             {
-                direction = 1;
+                direction = 0.1927739f;
                 moveVelocity = Vector3.right;
 
-                transform.localScale = new Vector3(direction, 1, 1);
+                transform.localScale = new Vector3(direction, 0.1927739f, 0.1927739f);
                 if (!anim.GetBool("isJump"))
                     anim.SetBool("isRun", true);
 
@@ -72,7 +105,7 @@ namespace ClearSky
         void Jump()
         {
             if ((Input.GetButtonDown("Jump") || Input.GetAxisRaw("Vertical") > 0)
-            && !anim.GetBool("isJump"))
+            && !anim.GetBool("isJump")) // pagnaka false ung isJump papasok ung code dito
             {
                 isJumping = true;
                 anim.SetBool("isJump", true);

@@ -63,5 +63,11 @@ namespace ClearSky
             anim.SetBool("isJump", true);
 
         }
+
+        public void Grappling()
+        {
+            ResetAnimation();
+            anim.SetBool("isGrap", true);
+        }
     }
 }

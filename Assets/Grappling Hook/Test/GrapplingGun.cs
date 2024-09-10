@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using ClearSky;
+using UnityEngine;
 
 public class GrapplingGun : MonoBehaviour
 {
+    public Animator anim;
+
     [Header("Scripts:")]
     public GrappleRope grappleRope;
     [Header("Layer Settings:")]
@@ -64,10 +67,13 @@ public class GrapplingGun : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            
             SetGrapplePoint();
         }
         else if (Input.GetKey(KeyCode.Mouse0))
         {
+            anim.SetBool("isJump", false);
+            anim.SetBool("isGrap", true);
             if (grappleRope.enabled)
             {
                 RotateGun(grapplePoint, false);
@@ -88,13 +94,22 @@ public class GrapplingGun : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0))
         {
+            anim.SetBool("isGrap", false);
+            anim.SetBool("isJump", true);
             grappleRope.enabled = false;
             m_springJoint2D.enabled = false;
             ballRigidbody.gravityScale = 1;
         }
         else
         {
+            anim.SetBool("isGrap", false);
             RotateGun(m_camera.ScreenToWorldPoint(Input.mousePosition), true);
+
+            if(SimplePlayerController.grounded == true)
+            {
+                SimplePlayerController.isJumping = false;
+                //anim.SetBool("isJump", false);
+            }
         }
     }
 
