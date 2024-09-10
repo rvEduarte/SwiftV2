@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/KurtFolder/Scene/Main.unity
     guid: a658afb1a7fa1d546903d3a2ffd5c09f
   - enabled: 1
-    path: Assets/KurtFolder/Scene/Sample MAin.unity
-    guid: ee65f616f300a3f4f95be748acec6805
-  - enabled: 1
     path: Assets/Scenes/Level1.unity
     guid: 23f7755dbdfba26449f471ec78f274dd
   - enabled: 1
