@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GrapplingGun : MonoBehaviour
 {
+    public Transform pointA;
     public Animator anim;
 
     [Header("Scripts:")]
@@ -34,7 +35,7 @@ public class GrapplingGun : MonoBehaviour
     [Range(0, 5)] [SerializeField] private float launchSpeed = 5;
 
     [Header("No Launch To Point")]
-    [SerializeField] private bool autoCongifureDistance = false;
+    [SerializeField] private bool autoConfigureDistance = false;
     [SerializeField] private float targetDistance = 3;
     [SerializeField] private float targetFrequency = 3;
 
@@ -47,6 +48,7 @@ public class GrapplingGun : MonoBehaviour
 
     [Header("Component Refrences:")]
     public SpringJoint2D m_springJoint2D;
+    public LineRenderer grappleLineRenderer;
 
     [HideInInspector] public Vector2 grapplePoint;
     [HideInInspector] public Vector2 DistanceVector;
@@ -75,6 +77,7 @@ public class GrapplingGun : MonoBehaviour
             if (grappleRope.enabled)
             {
                 RotateGun(grapplePoint, false);
+                DetectGrappleLineCollision();
             }
             else
             {
@@ -93,7 +96,8 @@ public class GrapplingGun : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             Debug.Log("RELEASE");
-            anim.SetBool("isGrap", false);       
+            anim.SetBool("isGrap", false);
+            anim.SetBool("isJump", true);
 
             grappleRope.enabled = false;
             m_springJoint2D.enabled = false;
@@ -111,6 +115,7 @@ public class GrapplingGun : MonoBehaviour
             }
         }
     }
+
     IEnumerator WaitForSec()
     {
         yield return new WaitForSeconds(0.1f);
@@ -134,14 +139,47 @@ public class GrapplingGun : MonoBehaviour
 
     void SetGrapplePoint()
     {
-        if (Physics2D.Raycast(firePoint.position, Mouse_FirePoint_DistanceVector.normalized))
+        RaycastHit2D[] hits = Physics2D.RaycastAll(firePoint.position, Mouse_FirePoint_DistanceVector.normalized, maxDistance);
+
+        foreach (RaycastHit2D hit in hits)
         {
-            RaycastHit2D _hit = Physics2D.Raycast(firePoint.position, Mouse_FirePoint_DistanceVector.normalized);
-            if ((_hit.transform.gameObject.layer == grappableLayerNumber || grappleToAll) && ((Vector2.Distance(_hit.point, firePoint.position) <= maxDistance) || !hasMaxDistance))
+            if (hit.collider != null && hit.transform.CompareTag("grappable"))
             {
-                grapplePoint = _hit.point;
+                // Grapple to the first object with the "grappable" tag
+                grapplePoint = hit.point;
                 DistanceVector = grapplePoint - (Vector2)gunPivot.position;
                 grappleRope.enabled = true;
+                return; // Exit the loop once the correct object is found
+            }
+        }
+
+        // If no object with "grappable" tag is found, no grapple will occur
+    }
+
+    void DetectGrappleLineCollision()
+    {
+        if (grappleLineRenderer.positionCount < 2) return; // Ensure the line renderer has at least two points
+
+        for (int i = 0; i < grappleLineRenderer.positionCount - 1; i++)
+        {
+            Vector3 start = grappleLineRenderer.GetPosition(i);
+            Vector3 end = grappleLineRenderer.GetPosition(i + 1);
+
+            // Check for collisions between each segment of the LineRenderer
+            RaycastHit2D hit = Physics2D.Linecast(start, end);
+
+            if (hit.collider != null)
+            {
+                Debug.Log("Line hit: " + hit.collider.name);
+
+                // Handle collision with the object
+                if (hit.collider.CompareTag("grappable"))
+                {
+                    pointA.transform.position = new Vector3(17.76f, 10.51f, -6.058676f);
+                    Debug.Log("Hit a grappable object!");
+                    grapplePoint = hit.point;
+                    break; // Exit once a valid hit is found
+                }
             }
         }
     }
@@ -149,7 +187,7 @@ public class GrapplingGun : MonoBehaviour
     public void Grapple()
     {
 
-        if (!launchToPoint && !autoCongifureDistance)
+        if (!launchToPoint && !autoConfigureDistance)
         {
             m_springJoint2D.distance = targetDistance;
             m_springJoint2D.frequency = targetFrequency;
@@ -157,7 +195,7 @@ public class GrapplingGun : MonoBehaviour
 
         if (!launchToPoint)
         {
-            if (autoCongifureDistance)
+            if (autoConfigureDistance)
             {
                 m_springJoint2D.autoConfigureDistance = true;
                 m_springJoint2D.frequency = 0;

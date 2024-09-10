@@ -14,7 +14,7 @@ namespace ClearSky
         //private int direction = 1;
         private float direction = 0.1927739f;
         public static bool isJumping = false;
-        private bool alive = true;
+        public static bool alive = true;
 
         public Camera mainCamera;
 
@@ -73,6 +73,12 @@ namespace ClearSky
             grounded = true;
             anim.SetBool("isJump", false); // Reset jump animation when landing
             Debug.Log("ENTER2D");
+
+            if (other.gameObject.CompareTag("dart"))
+            {
+                // Ignore the collision with the walk-through wall, allowing the player to pass through
+                Physics2D.IgnoreCollision(other, GetComponent<Collider2D>());
+            }
         }
 
         private void OnTriggerExit2D(Collider2D other)
