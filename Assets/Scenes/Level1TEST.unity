@@ -585,6 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df87d28dc270174d9df6d438f978cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
   grappleRope: {fileID: 1938309269}
   grappleToAll: 0
   grappableLayerNumber: 9
@@ -3435,6 +3436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movePower: 10
   jumpPower: 25
+  mainCamera: {fileID: 0}
 --- !u!1 &5684215889179773120
 GameObject:
   m_ObjectHideFlags: 0
