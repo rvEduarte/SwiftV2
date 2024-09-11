@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class ZoomScript : MonoBehaviour
 {
+    public SimplePlayerController controller;
+    public static bool zoom;
     public CinemachineVirtualCamera cameraV2;
     public Animator anim;
 
@@ -16,19 +18,12 @@ public class ZoomScript : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Player"))
         {
-            //Timer.countdownFinished = false;  //disableMove
-            SimplePlayerController.grounded = false;
+            anim.SetBool("isRun", false);
+            controller.enabled = false;
+            zoom = true;
             cameraV2.Priority = 11;
 
             StartCoroutine(CameraV1());
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.name.Equals("Player"))
-        {
-            
         }
     }
 
@@ -43,10 +38,10 @@ public class ZoomScript : MonoBehaviour
 
     IEnumerator enableMovement()
     {
-        yield return new WaitForSeconds(4.5f);
-        //Timer.countdownFinished = true; //enableMove
-        //triggerZoom.SetActive(false);
-        
+        yield return new WaitForSeconds(4);
+        zoomTrigger.SetActive(false);
+        controller.enabled = true;
+
     }
 
 }

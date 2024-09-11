@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     
     void Update()
     {
+
         var move = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0); //moving axis X Y
         transform.position += move.normalized * Speed * Time.deltaTime;
     }

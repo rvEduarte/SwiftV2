@@ -84,7 +84,7 @@ namespace ClearSky
 
         void PlayAnimation()
         {
-            if (anim.GetBool("isGrap") == false)
+            if (anim.GetBool("isGrap") == false && ZoomScript.zoom == false)
             {
                 Debug.Log("EXIT2D == PUMASOK");
                 anim.SetBool("isJump", true);
